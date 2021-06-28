@@ -18,7 +18,7 @@ class Classifier(object):
 
         if config.architecture == "LSTM":
             self.model_scheme = [
-                Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=X.shape[1], trainable=False),
+                Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=X.shape[1], trainable=True),
                 SpatialDropout1D(config.dropout),
                 LSTM(128, dropout=config.dropout, recurrent_dropout=0.2),
                 LayerNormalization(axis=1),
@@ -34,8 +34,8 @@ class Classifier(object):
                     SpatialDropout1D(config.dropout),
                     Bidirectional(LSTM(32, dropout=config.dropout, recurrent_dropout=0.2)),
                     LayerNormalization(axis=1),
-                    # Dense(128, activation='relu'),
-                    # Dropout(rate=0.2),
+                    Dense(128, activation='relu'),
+                    Dropout(rate=0.2),
                     Dense(number_of_classes, activation='softmax')
                 ]
             self.__model = tf.keras.Sequential(self.model_scheme)
