@@ -1,0 +1,1 @@
+{"architecture": "LSTM", "dropout": 0.2, "learning_rate": 0.0001, "optimizer": "adam", "loss_function": "categorical_crossentropy", "metric": "accuracy", "epochs": 1, "batch_size": 32}
