@@ -7,18 +7,21 @@ import wandb
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.callbacks import Callback
 from wandb.keras import WandbCallback
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
 # from dotenv import dotenv_values
 from datetime import datetime
 import os
 import json
 import argparse
+import matplotlib.pyplot as plt
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--out_root", help="Please specify the out root dir", type=str)
-parser.add_argument("--number_of_epochs", help="how much epochs", default=8, type=int)
+parser.add_argument("--number_of_epochs", help="how much epochs", default=1, type=int)
 parser.add_argument("--batch_size", help="batch size", default=64, type=int)
-parser.add_argument("--architecture", help="please specify the architecture of the classifier", default="LSTM", type=str)
+parser.add_argument("--architecture", help="please specify the architecture of the classifier", default="CNN", type=str)
 parser.add_argument("--project", type=str)
 parser.add_argument("--entity", type=str)
 
@@ -192,6 +195,17 @@ if __name__ == '__main__':
         # convert for mobile usage
         convert_model(model_name, directory)
         print("Loss of {}".format(loss), "Accuracy of {} %".format(accuracy * 100))
+
+        # confusion matrix
+        predictions = classifier.predict(test_X)
+        class_names = ["happiness", "sadness", "anger", "surprise", "fear", "neutral"]
+        # confusion_matrix(test_Y, predictions, labels=["happiness", "sadness", "anger", "surprise", "fear", "neutral"])
+        plot_confusion_matrix(classifier, test_X, test_Y,
+                              display_labels=class_names,
+                              cmap=plt.cm.Blues,
+                              #normalize=normalize
+                              )
+        plt.savefig(directory)
 
     # test the model on a few test sentences
     custom_test_sentences = [
