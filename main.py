@@ -7,7 +7,7 @@ import wandb
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.callbacks import Callback
 from wandb.keras import WandbCallback
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import plot_confusion_matrix
 # from dotenv import dotenv_values
 from datetime import datetime
@@ -199,13 +199,20 @@ if __name__ == '__main__':
         # confusion matrix
         predictions = classifier.predict(test_X)
         class_names = ["happiness", "sadness", "anger", "surprise", "fear", "neutral"]
-        # confusion_matrix(test_Y, predictions, labels=["happiness", "sadness", "anger", "surprise", "fear", "neutral"])
-        plot_confusion_matrix(classifier, test_X, test_Y,
-                              display_labels=class_names,
-                              cmap=plt.cm.Blues,
-                              #normalize=normalize
-                              )
-        plt.savefig(directory)
+        cm = confusion_matrix(test_Y.argmax(axis=1), predictions.argmax(axis=1))
+        # plot_confusion_matrix(classifier, test_X, test_Y,
+        #                       display_labels=class_names,
+        #                       cmap=plt.cm.Blues,
+        #                       #normalize=normalize
+        #                       )
+        # plt.savefig(directory)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+        disp.plot()
+        # plt.show()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.savefig(directory + "/confusion_matrix.jpg")
+        plt.close()
 
     # test the model on a few test sentences
     custom_test_sentences = [
