@@ -129,7 +129,7 @@ def create_train_test_set(tokenizer, df, maxlen, save_directory=None):
     X = pad_sequences(X, maxlen=maxlen)
     print('Shape of data tensor:', X.shape)
     # transform labels into one-hot vectors
-    onehot_labels = tf.keras.utils.to_categorical(df['labels'].to_list(), num_classes=7)
+    onehot_labels = tf.keras.utils.to_categorical(df['labels'].to_list(), num_classes=6)
     Y = onehot_labels
 
     print('Shape of label tensor:', Y.shape)
