@@ -22,6 +22,7 @@ parser.add_argument("--out_root", help="Please specify the out root dir", type=s
 parser.add_argument("--number_of_epochs", help="how much epochs", default=1, type=int)
 parser.add_argument("--batch_size", help="batch size", default=64, type=int)
 parser.add_argument("--architecture", help="please specify the architecture of the classifier", default="CNN", type=str)
+parser.add_argument("--experiment_name", help="please specify the name shown in wandb", default="CNN", type=str)
 parser.add_argument("--project", type=str)
 parser.add_argument("--entity", type=str)
 
@@ -32,6 +33,7 @@ BATCH_SIZE = args.batch_size
 ARCHITECTURE = args.architecture
 PROJECT = args.project
 ENTITY = args.entity
+EXPERIMENT_NAME = args.experiment_name
 
 # emotion mapping: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: frustration, 5: neutral, 6: excited}
 # emotion mapping new labels: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: fear, 5: neutral}
@@ -99,7 +101,7 @@ if __name__ == '__main__':
     #wandb.login(key=env_variables.get("api_key"))
 
     # Set an experiment name to group training and evaluation in wandb
-    experiment_name = "cnn_test"
+    experiment_name = EXPERIMENT_NAME
 
     # see available architectures in classifier
     my_config = {
