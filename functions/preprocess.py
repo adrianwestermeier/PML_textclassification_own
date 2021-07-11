@@ -12,6 +12,20 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 # used emotions: happiness, sadness, anger, surprise, frustration, neutral, excited
 def determine_label(line):
+    # if line == "happiness":
+    #     return 0
+    # elif line == "sadness":
+    #     return 1
+    # elif line == "anger":
+    #     return 2
+    # elif line == "surprise":
+    #     return 3
+    # elif line == "frustration":
+    #     return 4
+    # elif line == "neutral":
+    #     return 5
+    # else:  # "excited"
+    #     return 6
     if line == "happiness":
         return 0
     elif line == "sadness":
@@ -20,12 +34,10 @@ def determine_label(line):
         return 2
     elif line == "surprise":
         return 3
-    elif line == "frustration":
+    elif line == "fear":
         return 4
-    elif line == "neutral":
+    else:  # neutral
         return 5
-    else:  # "excited"
-        return 6
 
 
 # we need the max_length in order to determine the input length of the neural net
@@ -65,7 +77,7 @@ def clean_text(text):
 def derive_text_and_labels():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(dir_path)
-    dir_path = os.path.join(dir_path, 'datasets/parsed/iemo_daily_goemotion.csv')
+    dir_path = os.path.join(dir_path, 'datasets/parsed/iemo_daily_goemotion_new_labels.csv')
     print(dir_path)
     df = pd.read_csv(dir_path)
     print('df head')
@@ -83,6 +95,7 @@ def derive_text_and_labels():
     try:
         for line in df['emotion']:
             # mapping: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: frustration, 5: neutral, 6: excited}
+            # mapping new labels: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: fear, 5: neutral}
             labels.append(determine_label(line))
     except KeyError:
         print('No KeyError emotion')

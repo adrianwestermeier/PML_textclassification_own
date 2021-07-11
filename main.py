@@ -31,7 +31,22 @@ PROJECT = args.project
 ENTITY = args.entity
 
 # emotion mapping: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: frustration, 5: neutral, 6: excited}
+# emotion mapping new labels: { 0: happiness, 1: sadness, 2: anger, 3: surprise, 4: fear, 5: neutral}
 def determine_label(line):
+    # if line == "happiness":
+    #     return 0
+    # elif line == "sadness":
+    #     return 1
+    # elif line == "anger":
+    #     return 2
+    # elif line == "surprise":
+    #     return 3
+    # elif line == "frustration":
+    #     return 4
+    # elif line == "neutral":
+    #     return 5
+    # else:  # "excited"
+    #     return 6
     if line == "happiness":
         return 0
     elif line == "sadness":
@@ -40,17 +55,16 @@ def determine_label(line):
         return 2
     elif line == "surprise":
         return 3
-    elif line == "frustration":
+    elif line == "fear":
         return 4
-    elif line == "neutral":
+    else:  # "neutral"
         return 5
-    else:  # "excited"
-        return 6
 
 
 # function for determining the predicted label by argmax
 def label_to_category(max_index):
-    mapping = {0: "happiness", 1: "sadness", 2: "anger", 3: "surprise", 4: "frustration", 5: "neutral", 6: "excited"}
+    # mapping = {0: "happiness", 1: "sadness", 2: "anger", 3: "surprise", 4: "frustration", 5: "neutral", 6: "excited"}
+    mapping = {0: "happiness", 1: "sadness", 2: "anger", 3: "surprise", 4: "fear", 5: "neutral"}
     return mapping.get(max_index)
 
 
@@ -82,7 +96,7 @@ if __name__ == '__main__':
     #wandb.login(key=env_variables.get("api_key"))
 
     # Set an experiment name to group training and evaluation in wandb
-    experiment_name = "lstm_simple"
+    experiment_name = "cnn_test"
 
     # see available architectures in classifier
     my_config = {
@@ -148,7 +162,8 @@ if __name__ == '__main__':
     print('maxlen: ', maxlen)
 
     # define the text classifier
-    classifier = Classifier(config=config, number_of_classes=7, maxlen=maxlen, X=X)
+    # classifier = Classifier(config=config, number_of_classes=7, maxlen=maxlen, X=X)
+    classifier = Classifier(config=config, number_of_classes=6, maxlen=maxlen, X=X)
 
     load = False
     if load:  # load existing model
