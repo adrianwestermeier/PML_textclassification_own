@@ -32,7 +32,7 @@ class Classifier(object):
             self.model_scheme = [
                 Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=X.shape[1], trainable=True),
                 SpatialDropout1D(config.dropout),
-                Bidirectional(LSTM(32, dropout=config.dropout, recurrent_dropout=0.2)),
+                Bidirectional(LSTM(128, dropout=config.dropout, recurrent_dropout=0.2)),
                 LayerNormalization(axis=1),
                 Dense(128, activation='relu'),
                 Dropout(rate=0.2),
